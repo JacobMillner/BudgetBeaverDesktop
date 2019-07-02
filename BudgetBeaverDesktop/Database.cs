@@ -39,7 +39,8 @@ namespace BudgetBeaverDesktop
 										ID INTEGER PRIMARY KEY AUTOINCREMENT,
 										DateEntered DATETIME,
 										DollarAmount INTEGER,
-										FOREIGN KEY(BudgetCategory) REFERENCES BudgetCategory(ID))";
+										BudgetCategory INTEGER NOT NULL,
+											FOREIGN KEY(BudgetCategory) REFERENCES BudgetCategory(ID))";
 			SQLiteCommand budgetEntryCommand = new SQLiteCommand(budgetEntrySql, m_dbConnection);
 			budgetEntryCommand.ExecuteNonQuery();
 
@@ -55,15 +56,15 @@ namespace BudgetBeaverDesktop
 			return m_dbConnection;
 		}
 
-		public User LoadUser()
+		public static User LoadUser()
 		{
 			// query our user and return it
 			SQLiteConnection database = ConnectToDatabase();
-			User user = database.QueryFirst<User>("SELECT * FROM User");
+			User user = database.QueryFirstOrDefault<User>("SELECT * FROM User");
 			return user; 
 		}
 
-		public List<BudgetCategory> GetBudgetCategories()
+		public static List<BudgetCategory> GetBudgetCategories()
 		{
 			// query our BudgetCategories and return them
 			SQLiteConnection database = ConnectToDatabase();
@@ -71,7 +72,7 @@ namespace BudgetBeaverDesktop
 			return user;
 		}
 
-		public List<BudgetEntry> GetMonthsBudgetEntries()
+		public static List<BudgetEntry> GetMonthsBudgetEntries()
 		{
 			// query our BudgetEntrie for the month so far and return them
 			SQLiteConnection database = ConnectToDatabase();
