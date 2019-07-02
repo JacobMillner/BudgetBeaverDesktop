@@ -77,7 +77,8 @@ namespace BudgetBeaverDesktop
 			SQLiteConnection database = ConnectToDatabase();
 			DateTime now = DateTime.Now;
 			DateTime firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
-			List<BudgetEntry> user = database.Query<BudgetEntry>("SELECT * FROM BudgetCategory").ToList();
+			List<BudgetEntry> user = database.Query<BudgetEntry>(@"SELECT * FROM BudgetCategory
+																	WHERE DateEntered BETWEEN @firstDayOfMonth AND @now", new { firstDayOfMonth, now }).ToList();
 			return user;
 		}
 	}
